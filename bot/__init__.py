@@ -65,7 +65,7 @@ if os.path.exists('drive_index.txt'):
 if DRIVE_ID :
     pass
 else :
-    LOGGER.error("Fill up drive id's in drive_id.txt")
+    LOGGER.error("Fill up drive id's in drive_index.txt")
     exit(1)
 
 
