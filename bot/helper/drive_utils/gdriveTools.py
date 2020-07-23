@@ -77,7 +77,7 @@ class GoogleDriveHelper:
             if response["files"]:
                 for file in response.get('files', []):
                     if file.get('mimeType') == "application/vnd.google-apps.folder":  # Detect Whether Current Entity is a Folder or File.
-                        msg += f"⁍<code>{file.get('name')}<br>(folder📁)</code><br>" \
+                        msg += f"• <code>{file.get('name')}<br>(folder📁)</code><br>" \
                                f"<b><a href='https://drive.google.com/drive/folders/{file.get('id')}'>Drive Link</a></b>"
                         if index_url is not None:
                             url_path = requests.utils.quote(f'{file.get("name")}')
@@ -85,7 +85,7 @@ class GoogleDriveHelper:
                             msg += f' <b>| <a href="{url}">Index Link</a></b>'
 
                     else:
-                        msg += f"⁍<code>{file.get('name')}<br>({self.get_readable_file_size(file.get('size'))})📄</code><br>" \
+                        msg += f"• <code>{file.get('name')}<br>({self.get_readable_file_size(file.get('size'))})📄</code><br>" \
                                f"<b><a href='https://drive.google.com/uc?id={file.get('id')}&export=download'>Drive Link</a></b>"
                         if index_url is not None:
                             url_path = requests.utils.quote(f'{file.get("name")}')
@@ -103,8 +103,8 @@ class GoogleDriveHelper:
                                             html_content=msg
                                             )['path']
 
-        msg = f"<b>Search Results For:</b> <code>{fileName}</code>"
+        msg = f"<b>Search Results For :</b> <code>{fileName}</code>"
         buttons = button_builder.ButtonMaker()   
-        buttons.buildbutton("Open in Telegraph View", f"https://telegra.ph/{response}")
+        buttons.buildbutton("Open in Telegraph", f"https://telegra.ph/{response}")
 
         return msg, InlineKeyboardMarkup(buttons.build_menu(1))
