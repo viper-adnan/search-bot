@@ -1,4 +1,5 @@
-from telegram.ext import CommandHandler, run_async
+from telegram.ext import CommandHandler, run_async, MessageHandler
+from telegram.ext.filters import Filters
 from bot.helper.drive_utils.gdriveTools import GoogleDriveHelper
 from bot import LOGGER, dispatcher
 from bot.helper.telegram_helper.message_utils import sendMessage, editMessage
@@ -23,6 +24,6 @@ def list_drive(update,context):
 
 
 list_handler = CommandHandler(BotCommands.ListCommand, list_drive)
-msg_handler = MessageHandler(Filters.all, list_drive)
+msg_handler = MessageHandler(Filters.private, list_drive)
 dispatcher.add_handler(msg_handler)
 dispatcher.add_handler(list_handler)
