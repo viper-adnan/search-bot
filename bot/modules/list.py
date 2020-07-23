@@ -9,7 +9,7 @@ from bot.helper.telegram_helper.bot_commands import BotCommands
 def list_drive(update,context):
     try:
         search = update.message.text.split(' ',maxsplit=1)[1]
-        reply = sendMessage('Searching...', context.bot, update)
+        reply = sendMessage(f'Searching for {search} in my Google Drive Database...', context.bot, update)
 
         LOGGER.info(f"Searching: {search}")
         
@@ -23,4 +23,6 @@ def list_drive(update,context):
 
 
 list_handler = CommandHandler(BotCommands.ListCommand, list_drive)
+msg_handler = MessageHandler(Filters.all, list_drive)
+dispatcher.add_handler(msg_handler)
 dispatcher.add_handler(list_handler)
