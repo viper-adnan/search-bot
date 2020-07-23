@@ -103,7 +103,7 @@ class GoogleDriveHelper:
                                             html_content=msg
                                             )['path']
 
-        msg = f"<b>Search Results For:</b> <code>{filename}</code>"
+        msg = f"<b>Search Results For:</b> <code>{fileName}</code>"
         buttons = button_builder.ButtonMaker()   
         buttons.buildbutton("Open in Telegraph View", f"https://telegra.ph/{response}")
 
