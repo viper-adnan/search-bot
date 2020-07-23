@@ -45,7 +45,7 @@ def msg_list_drive(update,context):
 
 list_handler = CommandHandler(BotCommands.ListCommand, list_drive)
 msg_handler = MessageHandler(Filters.private & (~ Filters.command), msg_list_drive)
-start_msg = CommandHandler('start', start)
+start_msg = CommandHandler(BotCommands.StartCommand, start)
 dispatcher.add_handler(msg_handler)
 dispatcher.add_handler(list_handler)
 dispatcher.add_handler(start_msg)
