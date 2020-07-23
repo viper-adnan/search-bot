@@ -60,7 +60,7 @@ class GoogleDriveHelper:
         return build('drive', 'v3', credentials=credentials, cache_discovery=False)
 
     def drive_list(self, fileName):
-        msg = f'<h4>Results : {fileName}</h4><br>@LoaderXbot #ProjektX<br><br>'
+        msg = f'<h4>Search Results for : {fileName}</h4><br><br>'
         # Create Search Query for API request.
         INDEX_ID = 0
         for parent_id in DRIVE_ID :
@@ -74,7 +74,6 @@ class GoogleDriveHelper:
                                                orderBy='modifiedTime desc').execute()
             index_url = INDEX_URL[INDEX_ID]
             INDEX_ID += 1
-            msg += f"╾────────────╼<br><b>Team Drive : {INDEX_ID}</b><br>╾────────────╼<br>"
             if response["files"]:
                 for file in response.get('files', []):
                     if file.get('mimeType') == "application/vnd.google-apps.folder":  # Detect Whether Current Entity is a Folder or File.
@@ -94,18 +93,18 @@ class GoogleDriveHelper:
                             msg += f' <b>| <a href="{url}">Index Link</a></b>'
                     msg += '<br><br>'
             else :
-                msg += "⁍ <code>No Results</code><br><br>"
+                None
         
         telegraph = Telegraph()
         telegraph.create_account(short_name='Asta')
-        response = telegraph.create_page(title = 'LoaderX',
-                                            author_name='svr666',
-                                            author_url='https://t.me/svr666',
+        response = telegraph.create_page(title = 'GDrive Search Bot',
+                                            author_name='Adnan Ahmad',
+                                            author_url='https://t.me/viperadnan',
                                             html_content=msg
                                             )['path']
 
-        msg = f"<b>Search Results For {fileName} 👇</b>"
+        msg = f"<b>Search Results For:</b> <code>{filename}</code>"
         buttons = button_builder.ButtonMaker()   
-        buttons.buildbutton("HERE", f"https://telegra.ph/{response}")
+        buttons.buildbutton("Open in Telegraph View", f"https://telegra.ph/{response}")
 
         return msg, InlineKeyboardMarkup(buttons.build_menu(1))
