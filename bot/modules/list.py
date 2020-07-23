@@ -22,8 +22,24 @@ def list_drive(update,context):
     except IndexError:
         sendMessage('send a search key along with command', context.bot, update)
 
+@run_async
+def msg_list_drive(update,context):
+    try:
+        search = update.message.text
+        reply = sendMessage(f'Searching for {search} in my Google Drive Database...', context.bot, update)
+
+        LOGGER.info(f"Searching: {search}")
+        
+        gdrive = GoogleDriveHelper(None)
+        msg, button = gdrive.drive_list(search)
+
+        editMessage(msg,reply,button)
+
+    except IndexError:
+        sendMessage('send a search key along with command', context.bot, update)
+
 
 list_handler = CommandHandler(BotCommands.ListCommand, list_drive)
-msg_handler = MessageHandler(Filters.private, list_drive)
+msg_handler = MessageHandler(Filters.private, msg_list_drive)
 dispatcher.add_handler(msg_handler)
 dispatcher.add_handler(list_handler)
