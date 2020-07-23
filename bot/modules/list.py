@@ -8,7 +8,7 @@ from bot.helper.telegram_helper.bot_commands import BotCommands
 
 @run_async
 def start(update,context):
-    sendMessage(f'Hi, I can search for files in my Google Drive Database and returns a list of matching files with Google Drive Link.\n- Just send me the File Name.\n\nI am also usable in Groups just add me in any Group and send ```/search File Name```.', context.bot, update, parse_mode="markdown")
+    sendMessage(f'Hi, I can search for files in my Google Drive Database and returns a list of matching files with Google Drive Link.\n- Just send me the File Name.\n\nI am also usable in Groups just add me in any Group and send\n/search File Name.', context.bot, update)
 
 @run_async
 def list_drive(update,context):
