@@ -18,6 +18,7 @@ LOGGER = logging.getLogger(__name__)
 logging.getLogger('googleapiclient.discovery').setLevel(logging.ERROR)
 
 SIZE_UNITS = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
+PAGE_SIZE = os.environ.get("PAGE_SIZE", 200)
 
 class GoogleDriveHelper:
     def __init__(self, name=None, listener=None):
@@ -69,7 +70,7 @@ class GoogleDriveHelper:
                                                includeTeamDriveItems=True,
                                                q=query,
                                                spaces='drive',
-                                               pageSize=200,
+                                               pageSize=PAGE_SIZE,
                                                fields='files(id, name, mimeType, size)',
                                                orderBy='modifiedTime desc').execute()
             index_url = INDEX_URL[INDEX_ID]
