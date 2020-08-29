@@ -1,3 +1,5 @@
+import os
+
 config = """
   BOT_TOKEN = "{}"
   OWNER_ID = {}
