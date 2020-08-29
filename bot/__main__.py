@@ -14,7 +14,6 @@ def main():
 
     log_handler = CommandHandler(BotCommands.LogCommand, log, filters=CustomFilters.owner_filter)
 
-    dispatcher.add_handler(start_handler)
     dispatcher.add_handler(log_handler)
 
     updater.start_polling()
