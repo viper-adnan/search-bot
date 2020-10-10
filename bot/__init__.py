@@ -41,7 +41,7 @@ if os.path.exists('authorized_chats.txt'):
 
 try:
     BOT_TOKEN = getConfig('BOT_TOKEN')
-    OWNER_ID = int(getConfig('OWNER_ID'))
+    SUDO_USERS = list(set(int(x) for x in os.environ.get('SUDO_USERS', '939425014').split()))
 except KeyError as e:
     LOGGER.error("One or more env variables missing! Exiting now")
     exit(1)

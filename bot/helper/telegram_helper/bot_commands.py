@@ -6,5 +6,6 @@ class _BotCommands:
         self.AuthorizeCommand = 'auth'
         self.UnAuthorizeCommand = 'unauth'
         self.LogCommand = 'log'
+        self.DelCommand = 'de'
 
 BotCommands = _BotCommands()

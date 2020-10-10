@@ -1,8 +1,10 @@
 import os
+import re
 import pickle
-
 import requests
 import logging
+import urllib.parse as urlparse
+from urllib.parse import parse_qs
 
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -26,6 +28,17 @@ class GoogleDriveHelper:
         # Check https://developers.google.com/drive/scopes for all available scopes
         self.__OAUTH_SCOPE = ['https://www.googleapis.com/auth/drive']
         self.__service = self.authorize()
+
+    def getIdFromUrl(self, link: str):
+        if "folders" in link or "file" in link:
+            regex = r"https://drive\.google\.com/(drive)?/?u?/?\d?/?(mobile)?/?(file)?(folders)?/?d?/([-\w]+)[?+]?/?(w+)?"
+            res = re.search(regex,link)
+            if res is None:
+                raise IndexError("GDrive ID not found.")
+            return res.group(5)
+        parsed = urlparse.urlparse(link)
+        return parse_qs(parsed.query)['id'][0]
+
 
     def get_readable_file_size(self,size_in_bytes) -> str:
         if size_in_bytes is None:
@@ -63,10 +76,10 @@ class GoogleDriveHelper:
     def drive_list(self, fileName):
         msg = f'<h4>Search Results for : {fileName}</h4><br><br>'
         # Create Search Query for API request.
-        SearchfileName = fileName.replace(" ", "' AND name contains '")
+        Search_fileName = fileName.replace(" ", "' and name contains '")
         INDEX_ID = 0
         for parent_id in DRIVE_ID :
-            query = f"'{parent_id}' in parents and (name contains '{SearchfileName}')"
+            query = f"'{parent_id}' in parents and (name contains '{Search_fileName}')"
             response = self.__service.files().list(supportsTeamDrives=True,
                                                includeTeamDriveItems=True,
                                                q=query,
@@ -110,3 +123,21 @@ class GoogleDriveHelper:
         buttons.buildbutton("Open in Telegraph", f"https://telegra.ph/{response}")
 
         return msg, InlineKeyboardMarkup(buttons.build_menu(1))
+
+    def deleteFile(self, link):
+        try:
+          file_id = self.getIdFromUrl(link)
+        except (IndexError, KeyError):
+          return  "InValid Google Drive Link"
+        try:
+          self.__service.files().delete(fileId=file_id, supportsTeamDrives=True).execute()
+          return "File/Folder Deleted Successfully"
+        except HttpError as err:
+          if err.resp.get('content-type', '').startswith('application/json'):
+            reason = json.loads(err.content).get('error').get('errors')[0].get('reason')
+            if 'notFound' in reason:
+              return "File/Folder Not Found !"
+            elif 'insufficientFilePermissions' in reason:
+              return "Insufficient Permission to delete this file."
+            else:
+              return reason

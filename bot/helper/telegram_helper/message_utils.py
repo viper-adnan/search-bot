@@ -28,3 +28,10 @@ def sendLogFile(bot, update: Update):
         bot.send_document(document=f, filename=f.name,
                           reply_to_message_id=update.message.message_id,
                           chat_id=update.message.chat_id)
+
+def deleteMessage(bot, message: Message):
+    try:
+        bot.delete_message(chat_id=message.chat.id,
+                           message_id=message.message_id)
+    except Exception as e:
+        LOGGER.error(str(e))
