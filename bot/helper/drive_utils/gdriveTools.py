@@ -63,10 +63,10 @@ class GoogleDriveHelper:
     def drive_list(self, fileName):
         msg = f'<h4>Search Results for : {fileName}</h4><br><br>'
         # Create Search Query for API request.
-        fileName = fileName.replace(" ", "' AND name contains'")
+        SearchfileName = fileName.replace(" ", "' AND name contains '")
         INDEX_ID = 0
         for parent_id in DRIVE_ID :
-            query = f"'{parent_id}' in parents and (name contains '{fileName}')"
+            query = f"'{parent_id}' in parents and (name contains '{SearchfileName}')"
             response = self.__service.files().list(supportsTeamDrives=True,
                                                includeTeamDriveItems=True,
                                                q=query,
